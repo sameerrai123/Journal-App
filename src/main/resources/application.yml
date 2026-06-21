@@ -1,0 +1,106 @@
+#
+# // appln.yml file is more better readablilityapplication.ymlapplication.yml than .properties so use it ,, it si like appln.yml not yaml
+
+## this way mongo integrte with spring
+#
+#common code in both dev and prod file can be written here nd remove from there still will rtun
+#for example  lets say spring:
+#  data:
+#    mongodb:
+#      uri : mongodb+srv://testuser:sameer@cluster0.6lqejr9.mongodb.net/?appName=Cluster0
+#      database : journaldb  is common in both dev and prod then
+#      wrtie it in .yml instead of p[rod and dev and will run correctly
+
+
+spring:
+  profiles:
+    active: prod
+
+#logging:
+#  level:
+#    com:
+#      edigest:
+#        mysecondproject: DEBUG
+
+#        if u use package name afyer level then it will enable log on whole package
+#        if u use root then enable inside and outside all internal  package everywhere that log
+#        if want on spoecific class use that class or package
+#    completely off bhi karsakte hai using OFF
+#    logging:
+#      level:
+#        root: OFF   // root ke jagah jiss package ke class ka off karna chahte woh uss package and then class ka name
+#e.eg  logging:
+#  level:
+#    com:
+#      edigest:
+#        mysecondproject: D
+#          service:
+#            UserService : OFF    // userService class ke sare loggs off hojayenge same can do erroro or other log levels
+
+            #    multiple profiles de sakte hai like active : dev  , prod , test
+
+#server:
+#  port : 8082
+#  servlet:
+#    context-path: /journal
+
+# Optional (only if authentication is enabled)
+# spring.data.mongodb.username=myjournaluser
+# spring.data.mongodb.password=yourpassword
+
+#==> You create a class with @Document
+#Use a repository (like MongoRepository)
+#Save data using .save()
+#? Example:
+#
+#journalRepository.save(new Journal("My Title", "My Content"));
+#
+#?? This data will automatically appear inside MongoDB in the journaldb database.
+
+#
+#  /* application.prpoperties one alternate is appliaction.yaml ( yaml is yaml mark up text language)\
+#  \
+#  its structre will be like\
+# /*
+#  data:
+#    mongodb: // space is here of 1 tab from front or 2 spacebar
+#        uri: ruilink
+#        database: jounaldb
+#        auto-index-correction: true
+#
+#
+#server:
+#    port: 8080
+#    servlet:
+#        context-path: /journal
+
+#when we use at dev it has 2 or 3 user for demo but at prod level it has many user so have to use didfferent mongodb
+#databsse at prod so without changing we have to configure database and it can done by using profiles. or we
+#also can use different port for dev and prode etc by using profile
+
+#this is default package for profile i n this we declare which one is active profile
+#  here dev is active dev profile will run and provide configuration based on dev environament
+
+#if creating yml file by command line then activ eprofile will be like
+#    .\mvnw clean package -Dspring.profiles.active=dev    // cretes jar file  and if test nahi hote then use .\mvnw clean package
+#     -D bcoz yaha pe jvm ki properties, system ki prop set karrahe
+#go to target cd target
+#  then java -jar jarfilename --spring.profiles.active= dev    // yha pe parameters pass karrahe , pop set nahi karrhe
+
+#
+#easy way o set active profile is from intellijeid
+#go to edit configuration from top and in environment vriables set it
+#    like spring.profiles.active=dev   // yaha active = prod nahi karsakte bcoz whitelisted hai kiyuki local machine se production ke mongo server klo access nahi kar sakte  but package and commen dline per karsakte hai
+#
+#jankins ek ui hota hai jo automatic button provide karta hai for this to swirch profiles
+
+
+# below code is common in both dev and prod profile so instead of writing it in both profile write in default main
+#  yml file , i.e. whatever ciommon code will be there in dev and prod profile dont write in both , write it into 'defa
+#  default yml file   and those are diofferent like mongo nserver then it should only written in both diffeernt file respectively
+
+
+#server:
+#  port : 8082
+#  servlet:
+#    context-path: /journal

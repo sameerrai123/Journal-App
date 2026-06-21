@@ -1,0 +1,36 @@
+#  Spring Boot Profiles are used to manage different configurations for different environments such
+#  as Development, Testing, and Production. A profile is activated using spring.profiles.active.
+#You can create separate files like application-dev.properties and application-prod.properties for
+#  environment-specific settings. The @Profile annotation is used to load specific beans only for a
+#  particular profile. Profiles help avoid changing configuration manually when moving between environments.
+#  They make applications easier to maintain and deploy.
+#
+#  Revision shortcut:
+#
+#    Profiles = Different configurations for Dev, Test, and Prod environments.
+
+#  Spring Profiles provide a way to maintain different configurations for different environments such as Development,
+#Testing, and Production. Using profiles, we can use different database connections (e.g., MongoDB servers),
+#  context paths, API URLs, logging levels, and other environment-specific properties. Profile-specific files
+#  like application-dev.properties and application-prod.properties are used to store these configurations.
+#  The active profile is selected using spring.profiles.active. This helps avoid code changes when deploying
+#  the application to different environments.
+#
+#One-line revision:
+#
+#  Spring Profiles allow environment-specific configurations (Dev, Test, Prod) without changing the application code.
+
+#spring:
+#  data:
+#    mongodb:
+#      uri : mongodb+srv://Sameerrai:Siddharthrai%402007@cluster0.6lqejr9.mongodb.net/?appName=Cluster0
+#      database : journaldb
+#      auto-index-creation : true
+#  application:
+#    name: mysecondproject
+
+
+server:
+  port : 8082
+  servlet:
+    context-path: /journal
