@@ -6,11 +6,13 @@
 
 package com.edigest.mysecondproject.controller;
 
+import com.edigest.mysecondproject.api.response.WeatherResponse;
 import com.edigest.mysecondproject.entity.JournalEntry;
 import com.edigest.mysecondproject.entity.User;
 import com.edigest.mysecondproject.repository.UserRepository;
 import com.edigest.mysecondproject.service.JournalEntryService;
 import com.edigest.mysecondproject.service.UserService;
+import com.edigest.mysecondproject.service.WeatherService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,10 +34,13 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-    @GetMapping
+    @GetMapping("/all")
     public List<User> getAllUsers() {
         return userService.getAll();
     }
+
+    @Autowired
+    private WeatherService weatherService;
 
 
 
@@ -49,12 +54,16 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         User userInDb = userService.findByUserName(userName);
+        if (userInDb == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
             userInDb.setUserName(user.getUserName());
             userInDb.setPassword(user.getPassword());
             userService.saveNewuser(userInDb);
 
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(userInDb, HttpStatus.OK);
+
     }
 
     @DeleteMapping
@@ -62,6 +71,24 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userRepository.deleteByUserName(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> greeting(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        WeatherResponse weather = weatherService.getWeather("Mumbai");
+        String greeting = " ";
+        if(weather!=null){
+            String temp = weather.getCurrent().getTemperature().toString();
+            String feelsLike = weather.getCurrent().getFeelslike().toString();
+            String condition = weather.getCurrent().getWeatherDescriptions().get(0);
+
+            greeting = "Weather: " + temp + "°C, feels like " + feelsLike + "°C, " + condition;
+
+        }
+        return new ResponseEntity<>("Hi  " +  authentication.getName() + greeting , HttpStatus.OK);
+        // here passing mumbai for all bcoz we have not assigned city like roles to every user while logging
+        // so when we assign city toi every user while logging then after authentication we can pass user.getCity and response will fetch on respective user city
     }
 
     /* if authenticated

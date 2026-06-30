@@ -32,7 +32,7 @@ public class UserServiceTests {
     @Autowired
     private UserService userService;
 
-//    @ParameterizedTest  // wjhatever metghod u want to run as test annotate it with @Test
+//    @ParameterizedTest  // whatever method u want to run as test annotate it with @Test
 //    @ValueSource(strings = {   // if passing integer then ints = , @Enumsource for enum type
 //            "rem",
 //            "shyam"
@@ -51,7 +51,7 @@ public class UserServiceTests {
 //}
 
     //if we want to test bu want to pass parameters instead of hard code use @ParameterizedTest and
-    //sebd paraemters trhough @csvSource for value without data type
+    //send  paraemeters trhough @csvSource for value without data type
     //and use @ValueSource for value p[assing with datatypes like string wagera
     @ParameterizedTest
     @CsvSource({
@@ -63,7 +63,7 @@ public class UserServiceTests {
     }
 
     @ParameterizedTest  // wjhatever metghod u want to run as test annotate it with @Test
-    @ArgumentsSource(UserArgumentProvider.class) //@ArgumentsSource used for custoom source creation of paraemters by extending Argumentsprovider
+    @ArgumentsSource(UserArgumentProvider.class) //@ArgumentsSource used for custoom source creation of paraemters like in form of building user qnd password then it donre by extending Argumentsprovider
     public void testsavenewuser(User user){
 
         assertTrue(userService.saveNewuser(user)) ;//

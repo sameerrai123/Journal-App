@@ -65,10 +65,19 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/journal/**" , "/user/**").authenticated() //** means yaha 0 ya kitne char wale end points aasakte hai
-                .antMatchers("/admin/**").hasRole("ADMIN")  // does yhe user has admin role assign or not in database
+                .antMatchers("/public/**").permitAll() //if journal bhi authenticate kardiye then sare api authenticate hojayenge bcoz journal context path hai sab endpoint ke pehle autmatically aayega
+                .antMatchers("/user/**").authenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic();
+
+    }
+                // does yhe user has admin role assign or not in database
                 /* 👉 Any API endpoint that starts with /admin/ is only accessible to users who have the role ADMIN.
 
 🔐 What “admin code” (role check) is doing here
@@ -88,12 +97,12 @@ Does the user have ROLE_ADMIN? (authorization)
 
 If YES → access allowed
 If NO → Spring returns 403 Forbidden*/
-                .anyRequest().permitAll()
-                .and()
-                .httpBasic();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
-        //csrf is a malicious attack which can trick u to submit request which we do not want toi send
-    }
+//                .anyRequest().permitAll()
+//                .and()
+//                .httpBasic();
+//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
+//        //csrf is a malicious attack which can trick u to submit request which we do not want toi send
+//    }
 
     @Override
 

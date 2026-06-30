@@ -48,7 +48,7 @@ public class UserDetailsServiceimplTest {
         MockitoAnnotations.initMocks(this);
     }
     void loadUserByUserNameTest(){
-        when(userRepository.findByUserName(ArgumentMatchers.anyString())).thenReturn(User.builder().userName("ram").password("pass").build()); // mock behaviour
+        when(userRepository.findByUserName(ArgumentMatchers.anyString())).thenReturn(User.builder().userName("ram").password("pass").build()); // mock behaviour   ,, yani fake object create karna
         UserDetails user = userDetailsService.loadUserByUsername("ram");
         Assertions.assertNotNull(user);
     }

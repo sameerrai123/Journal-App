@@ -34,3 +34,5 @@ server:
   port : 8082
   servlet:
     context-path: /journal
+
+#    context-path means spring will aotumatically add this before all endpoints so add it before sending requests in all api

@@ -3,6 +3,7 @@ package com.edigest.mysecondproject.service;
 import com.edigest.mysecondproject.entity.JournalEntry;
 import com.edigest.mysecondproject.entity.User;
 import com.edigest.mysecondproject.repository.JournalEntryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import java.util.Optional;
 // if dono me save hua then transactio happened
 
 @Component
+@Slf4j
 public class JournalEntryService {
 
     //dushre class ka object banake is class me inject karna is DI done by @autowired
@@ -41,8 +43,9 @@ public class JournalEntryService {
             JournalEntry saved = journalEntryRepository.save(journalEntry);
             user.getJournalEntries().add(saved);
             userService.saveUser(user);
+            
         } catch (Exception e) {
-
+            log.error("error" , e);
             throw new RuntimeException(e);
         }
 
