@@ -1,74 +1,35 @@
 spring:
+  redis:
+    uri: ${REDIS_URI}
+
   data:
     mongodb:
-      uri : mongodb+srv://testuser:sameer@cluster0.6lqejr9.mongodb.net/?appName=Cluster0
-      database : journaldb
-      auto-index-creation : true
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DATABASE:journaldb}
+      auto-index-creation: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   application:
     name: mysecondproject
 
 server:
-  port : 8083
+  port: ${PORT:8085}
   servlet:
     context-path: /journal
 
 
-#spring:
-#  data:
-#    mongodb:
-#      uri: mongodb+srv://Sameerrai:Siddharthrai%402007@cluster0.6lqejr9.mongodb.net/?appName=Cluster0
-#      database : journaldb
-#      auto-index-creation: true
-#
-#//if in future any issue occur with not loading data in .yml file
-#  For production
-#
-#Don't use 0.0.0.0/0 unless necessary. Instead:
-#
-#  Allow only specific server IPs.
-#  Store Mongo credentials in environment variables, not YAML files.
-#  How to know if your IP changed
-#
-#When the app suddenly stops connecting:
-#
-#  Go to Atlas → Network Access.
-#  Check the whitelisted IP.
-#  Visit a site like "what is my IP" in your browser.
-#  If they differ, add the new IP.
-
-
-
-# // appln.yml file is more better readablilityapplication.ymlapplication.yml than .properties so use it ,, it si like appln.yml not yaml
-
-# this way mongo integrte with spring
-
-
-# Optional (only if authentication is enabled)
-# spring.data.mongodb.username=myjournaluser
-# spring.data.mongodb.password=yourpassword
-
-#==> You create a class with @Document
-#Use a repository (like MongoRepository)
-#Save data using .save()
-#? Example:
-#
-#journalRepository.save(new Journal("My Title", "My Content"));
-#
-#?? This data will automatically appear inside MongoDB in the journaldb database.
-
-#
-#  /* application.prpoperties one alternate is appliaction.yaml ( yaml is yaml mark up text language)\
-#  \
-#  its structre will be like\
-# /*
-#  data:
-#    mongodb: // space is here of 1 tab from front or 2 spacebar
-#        uri: ruilink
-#        database: jounaldb
-#        auto-index-correction: true
-#
-#
-#server:
-#    port: 8080
-#    servlet:
-#        context-path: /journal
+  # for security purpose we have not to exppose our username and passwords while oushing to github for deploying
+  # so we use ${ values name} and then push this file to github and manully fill those values on deploying website
+    # like here in case we are using railway so we will fill all uri username and password values on railway and here
+    # just write valyes name and pushing to github

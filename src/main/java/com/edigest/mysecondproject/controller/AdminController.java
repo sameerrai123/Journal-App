@@ -1,5 +1,6 @@
 package com.edigest.mysecondproject.controller;
 
+import com.edigest.mysecondproject.cache.AppCache;
 import com.edigest.mysecondproject.entity.User;
 import com.edigest.mysecondproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Autowired
+    private AppCache appCache;
 
     @Autowired
     private UserService userService;
@@ -31,4 +35,16 @@ public class AdminController {
     public void createUser(@RequestBody User user){
         userService.saveadmin(user);
     }
+
+   @GetMapping("clear-app-cache")
+    public void clearAppCache(){
+        appCache.init();
+    }
+    /* using above postconrtuct init method
+    //postconstruct runs only once after bean creation and every tyime will give same intialized object and
+    //if want differnet every time so to have to start again project ot get updated data
+    // so avoiding restart manually everytiume will use controller , expose an endpoitn (call this method in it) which will automatically restart this method
+    // after each call on that endpoint and give updated value from db
+
+     */
 }

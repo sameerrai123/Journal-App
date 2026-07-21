@@ -1,7 +1,9 @@
 package com.edigest.mysecondproject.service;
 
 import com.edigest.mysecondproject.api.response.WeatherResponse;
+import com.edigest.mysecondproject.cache.AppCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -10,24 +12,38 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class WeatherService {
 
-    private static final String apikey = "6cced97ffb56ee6106afad2bf48ba07f";
+    @Value("${weather.api.key}")    //weather.api.key is property name where api key is stored
 
-    private static final String API = "https://api.weatherstack.com/current?access_key=API_KEY&query=CITY";
+    private  String apikey ;   // not static bcoz spring agar isse chhedega to puri class me may be galti hisakti bcoz statc belongs to class not object
+
+//    private static final String API = "https://api.weatherstack.com/current?access_key=API_KEY&query=CITY";
+@Autowired
+private AppCache appcache;
+
+@Autowired
+private RedisService redisService;
 
     @Autowired
     private RestTemplate restTemplate;   // restTemplate is used to hit http request on api from code ,, using it automate kardega request ko bar bar browser pe na karne apde suatomatic data fetch karega and yaha embedd kardega
        //it prcoess request and give us response
 
-            public WeatherResponse getWeather(String city){
-                String finalAPI = API.replace("CITY" , city).replace("API_KEY", apikey);   //final url of each request
-                ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalAPI , HttpMethod.GET , null , WeatherResponse.class );   // null bcoz enitiyrequest(header(extra info) , body) is null we are getting data not posting or sending values to fetch data accrodinglt and weatherResponse.class is class used to convert json in pojo created in api.response package
-                //httpheader is used here for extra info like in some cases in documentation its mentioned send api key thorugh header not api url in that case use it
-                //jo json api request see aayega woh Weatherresponse.class ke format me yani pjo(java object) me convert hojayega (deseriazlization)
-              //Get use karte hai jab hame kuchh retrive karna ho and post use karte hai jab hame kuchh url ke sath data send karna ho and usse process karna ho
-                WeatherResponse body = response.getBody();
-                return body;
+            public WeatherResponse getWeather(String city) {
+                WeatherResponse weatherResponse = redisService.get("Weather of " + city, WeatherResponse.class);
+                if (weatherResponse != null) {
+                    return weatherResponse;
+                } else {
+                    String finalAPI = appcache.appCache.get("weather_api").replace("<city>", city).replace("<apikey>", apikey);   //final url of each request
+                    ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalAPI, HttpMethod.GET, null, WeatherResponse.class);   // null bcoz enitiyrequest(header(extra info) , body) is null we are getting data not posting or sending values to fetch data accrodinglt and weatherResponse.class is class used to convert json in pojo created in api.response package
+                    //httpheader is used here for extra info like in some cases in documentation its mentioned send api key thorugh header not api url in that case use it
+                    //jo json api request see aayega woh Weatherresponse.class ke format me yani pjo(java object) me convert hojayega (deseriazlization)
+                    //Get use karte hai jab hame kuchh retrive karna ho and post use karte hai jab hame kuchh url ke sath data send karna ho and usse process karna ho
+                    WeatherResponse body = response.getBody();
+                    if(body != null){
+                        redisService.set("Weather of " + city , body ,300l);
+                    }
+                    return body;
+                }
             }
-
             //website pe api documentaion me given hota hai like access key me api key dalna or query me city name dalana hai wagera
 }
 

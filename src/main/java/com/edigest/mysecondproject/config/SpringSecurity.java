@@ -147,6 +147,11 @@ Success / Failure
 
 
     }
+    /*
+    userDetailsService(userDetailsService) → Fetches the user's username, password, and roles from the database.
+passwordEncoder(passwordEncoder()) → Compares the entered password with the encrypted password stored in the database (e.g., BCrypt).
+Result: During login, Spring loads the user from the database and checks whether the entered password matches the encoded password.
+     */
 
     @Bean
     public PasswordEncoder passwordEncoder(){

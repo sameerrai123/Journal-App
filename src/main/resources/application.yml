@@ -16,6 +16,11 @@ spring:
   profiles:
     active: prod
 
+#using @value format hiding key here
+weather:
+  api:
+    key: 6cced97ffb56ee6106afad2bf48ba07f
+
 #logging:
 #  level:
 #    com:

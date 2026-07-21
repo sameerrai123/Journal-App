@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 //all api and endpoints are created inside controller
+
 // controller me endpoints create karte hai and service me buisnesss logic
 
 @RestController

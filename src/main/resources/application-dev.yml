@@ -17,7 +17,7 @@
 #  the application to different environments.
 #
 #One-line revision:
-#
+
 #  Spring Profiles allow environment-specific configurations (Dev, Test, Prod) without changing the application code.
 
 #spring:

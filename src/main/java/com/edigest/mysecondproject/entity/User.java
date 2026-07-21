@@ -1,8 +1,6 @@
 package com.edigest.mysecondproject.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -16,7 +14,9 @@ import java.util.List;
 // @document users name ka eak database me tabl;e create kardega jisme user class ke sare dqta store honge
 // @Document is a database model stored class in row like structure
 //@Document is used for mongodb only , it makes each object of class stored in row like structure in database
-@Data
+@Data // ye use karne se constructor hat jate hai so use noargsconstructor and allargscosntructor
+@NoArgsConstructor  //Generates a constructor with no parameters.
+@AllArgsConstructor  // Generates a constructor with all fields as parameters.
 @Builder
 public class User {
 
@@ -27,6 +27,8 @@ public class User {
     @Indexed(unique = true)  // @Indexed to create index on field in database
     @NonNull
     private String userName;
+    private String email;
+    private boolean sentimentAnalysis;
     @NonNull
     private String password;
 

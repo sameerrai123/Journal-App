@@ -1,34 +1,27 @@
 package com.edigest.mysecondproject.entity;
 
-import com.edigest.mysecondproject.enums.Sentiment;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
 
-@Document(collection = "journal_entries")  // map class with given collections
+@Document(collection = "config_journal_app")  // map class with given collections
 // it means jo JournalEntry ka instance yani object hoga woh document ke barabar hoga yani ek row ke barabar
 //entity a java class represnts database table
 @Data
 //@Data annotation equals or does thw work of @getter , @setter , @RequiredArgsConstructor @ToString @EqualsAndHashCode
 @NoArgsConstructor
-
-public class JournalEntry {
-
-    @Id   //document ki coolection usme unique key
-    private ObjectId id;
-    @NonNull//ObjectId is data typeof mongodb
-    private String title;
-    private String content;
+//this is pojo class means plane java class
+public class ConfigJournalAppEntity {
 
 
 
-    private Instant Date;
+    private String key;
+    private String value;
 
 
-    private Sentiment sentiment;
 }

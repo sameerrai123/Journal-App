@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,9 +40,10 @@ public class JournalEntryService {
         try {
             User user = userService.findByUserName(userName);
 
-            journalEntry.setDate(LocalDateTime.now());
+            journalEntry.setDate(Instant.now());
             JournalEntry saved = journalEntryRepository.save(journalEntry);
-            user.getJournalEntries().add(saved);
+            user.getJournalEntries().add(saved);  //getjournalEntries() is not method , automatically generated
+            //by @Data annotation as we have used @Data annotation on user entiity so its saving journlentry and will return , its like getter function
             userService.saveUser(user);
             
         } catch (Exception e) {
