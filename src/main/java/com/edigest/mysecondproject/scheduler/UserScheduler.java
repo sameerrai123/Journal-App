@@ -2,11 +2,13 @@ package com.edigest.mysecondproject.scheduler;
 
 import com.edigest.mysecondproject.cache.AppCache;
 import com.edigest.mysecondproject.entity.JournalEntry;
+import com.edigest.mysecondproject.entity.SentimentData;
 import com.edigest.mysecondproject.entity.User;
 import com.edigest.mysecondproject.enums.Sentiment;
 import com.edigest.mysecondproject.repository.UserRepositoryImpl;
 import com.edigest.mysecondproject.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,9 @@ public class UserScheduler {  // integrate email and sentiment together (corns j
 
     @Autowired
     private EmailService emailService;
+
+   @Autowired
+   private KafkaTemplate<String , SentimentData> kafkaTemplate;
 
     @Autowired
     private UserRepositoryImpl userRepository;
@@ -53,7 +58,8 @@ public class UserScheduler {  // integrate email and sentiment together (corns j
                    }
                }
                if(mostFrequentSentiment != null){
-                   emailService.sendEmail(user.getEmail() , "Sentiment for last 7 days" , mostFrequentSentiment.toString());
+                   SentimentData sentimentData = SentimentData.builder().email(user.getEmail()).sentiment("sentiment for last 7 days"+ mostFrequentSentiment).build();
+                   kafkaTemplate.send("Weekly-sentiment", sentimentData.getEmail() , sentimentData);
                }
            }
 

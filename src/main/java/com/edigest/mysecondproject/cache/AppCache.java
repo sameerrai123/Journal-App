@@ -30,7 +30,7 @@ public class AppCache {
         appCache = new HashMap<>();  //on every start initialize new empty map to update the new entry for clearing old cache
         List<ConfigJournalAppEntity> all = configJournalAppRepository.findAll();
         for (ConfigJournalAppEntity configJournalAppEntity : all) {
-            appCache.put(configJournalAppEntity.getKey() , configJournalAppEntity.getValue());  // key value jo stored loye bhai db ,me repository ke help se uthake appcache mestore kararhe
+            appCache.put(configJournalAppEntity.getKey() , configJournalAppEntity.getValue());  // key value jo stored kiye hai db ,me repository ke help se uthake appcache mestore kararhe
         }
 
     }

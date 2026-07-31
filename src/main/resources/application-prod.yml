@@ -1,0 +1,37 @@
+# this is only secret env vakues and will pushed to github and deploy publicaly
+
+spring:
+  redis:
+    uri: ${REDIS_URI}
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DATABASE:journaldb}
+      auto-index-creation: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  application:
+    name: mysecondproject
+
+server:
+  port: ${PORT:8085}
+  servlet:
+    context-path: /journal
+
+
+  # for security purpose we have not to exppose our username and passwords while oushing to github for deploying
+  # so we use ${ values name} and then push this file to github and manully fill those values on deploying website
+    # like here in case we are using railway so we will fill all uri username and password values on railway and here
+    # just write valyes name and pushing to github

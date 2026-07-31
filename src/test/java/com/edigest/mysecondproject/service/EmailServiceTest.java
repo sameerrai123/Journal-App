@@ -12,7 +12,7 @@ public class EmailServiceTest {
     @Autowired
     private EmailService emailService;
 
-    @Disabled //means this test will not run
+    //@Disabled //means this test will not run
     @Test
     public void testSendMail(){
         emailService.sendEmail("siddharthrai300@gmail.com", "testing subject" , "aap kaise");

@@ -1,3 +1,8 @@
+
+# this section is for storing all local things like redis mongo all for testing yani nlocal settings
+
+
+
 #  Spring Boot Profiles are used to manage different configurations for different environments such
 #  as Development, Testing, and Production. A profile is activated using spring.profiles.active.
 #You can create separate files like application-dev.properties and application-prod.properties for

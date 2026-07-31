@@ -33,4 +33,4 @@ build/
 .vscode/
 
 # Local configuration containing secrets
-src/main/resources/application-prod.yml
+src/main/resources/application-prod-practise.yml
