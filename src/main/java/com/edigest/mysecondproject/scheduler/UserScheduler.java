@@ -45,23 +45,35 @@ public class UserScheduler {  // integrate email and sentiment together (corns j
                     .filter(x -> x.getDate().isAfter(Instant.now().minus(7, ChronoUnit.DAYS))).map(x -> x.getSentiment())
                     .collect(Collectors.toList());
            Map<Sentiment, Integer> sentimentCounts =  new HashMap<>();
-           for(Sentiment sentiment : sentiments){
-               if(sentiment != null){
-                   sentimentCounts.put(sentiment , sentimentCounts.getOrDefault(sentiment , 0) + 1);
-               }
-               Sentiment mostFrequentSentiment = null;
-               int maxCount = 0;
-               for(Map.Entry<Sentiment , Integer> entry : sentimentCounts.entrySet()){
-                   if(entry.getValue() > maxCount){
-                       maxCount = entry.getValue();
-                       mostFrequentSentiment = entry.getKey();
-                   }
-               }
-               if(mostFrequentSentiment != null){
-                   SentimentData sentimentData = SentimentData.builder().email(user.getEmail()).sentiment("sentiment for last 7 days"+ mostFrequentSentiment).build();
-                   kafkaTemplate.send("Weekly-sentiment", sentimentData.getEmail() , sentimentData);
+           for(Sentiment sentiment : sentiments) {
+               if (sentiment != null) {
+                   sentimentCounts.put(sentiment, sentimentCounts.getOrDefault(sentiment, 0) + 1);
                }
            }
+
+            Sentiment mostFrequentSentiment = null;
+            int maxCount = 0;
+            for(Map.Entry<Sentiment , Integer> entry : sentimentCounts.entrySet()){
+                if(entry.getValue() > maxCount){
+                    maxCount = entry.getValue();
+                    mostFrequentSentiment = entry.getKey();
+                }
+            }
+
+               //use this if not using kafka and want to deploy as depoy platfporm need kafka cloud
+               if(mostFrequentSentiment != null){
+                   emailService.sendEmail(user.getEmail(), "Sentiment - analysis" , mostFrequentSentiment.toString());  // .toString convert in string bcoz in sendEmail this parameter is of string type bbut passing Sentiment data type so convert into string
+               }
+
+
+
+               //use this only when kafka server is using while deplioying
+//               if(mostFrequentSentiment != null){
+//                   SentimentData sentimentData = SentimentData.builder().email(user.getEmail()).sentiment("sentiment for last 7 days"+ mostFrequentSentiment).build();
+//
+//                  kafkaTemplate.send("Weekly-sentiment", sentimentData.getEmail() , sentimentData);
+//               }
+
 
 
         }
